@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATB Uren Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-teal-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-8">
+                <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">ATB Uren Calculator</h1>
+                
+                <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Werkgever Gegevens</h2>
+                        <div class="space-y-3">
+                            <div>
+                                <label for="werkgeverNaam" class="block text-sm font-medium text-gray-700">Naam:</label>
+                                <input type="text" id="werkgeverNaam" value="Redwave" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werkgeverAdres" class="block text-sm font-medium text-gray-700">Adres:</label>
+                                <input type="text" id="werkgeverAdres" value="Handelskade 6, 1948 NA Beverwijk" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werkgeverTelefoon" class="block text-sm font-medium text-gray-700">Telefoon:</label>
+                                <input type="text" id="werkgeverTelefoon" value="+31 (0)251 26 24 00" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werkgeverEmail" class="block text-sm font-medium text-gray-700">E-mail:</label>
+                                <input type="email" id="werkgeverEmail" value="info@redwave.nl" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Werknemer Gegevens</h2>
+                        <div class="space-y-3">
+                            <div>
+                                <label for="werknemerNaam" class="block text-sm font-medium text-gray-700">Naam:</label>
+                                <input type="text" id="werknemerNaam" value="YOUR NAME" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werknemerAdres" class="block text-sm font-medium text-gray-700">Adres:</label>
+                                <input type="text" id="werknemerAdres" value="YOUR ADDRESS" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werknemerTelefoon" class="block text-sm font-medium text-gray-700">Telefoon:</label>
+                                <input type="text" id="werknemerTelefoon" value="YOUR PHONE NUMBER" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="werknemerEmail" class="block text-sm font-medium text-gray-700">E-mail:</label>
+                                <input type="email" id="werknemerEmail" value="YOUR EMAIL" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Pauzetijden</h2>
+                    <div id="pauzetijden" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="pauze1" class="block text-sm font-medium text-gray-700 mb-1">Pauze 1:</label>
+                            <input type="text" id="pauze1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="09:00-09:15">
+                        </div>
+                        <div>
+                            <label for="pauze2" class="block text-sm font-medium text-gray-700 mb-1">Pauze 2:</label>
+                            <input type="text" id="pauze2" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="12:30-13:15">
+                        </div>
+                        <div>
+                            <label for="pauze3" class="block text-sm font-medium text-gray-700 mb-1">Pauze 3:</label>
+                            <input type="text" id="pauze3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="15:30-16:00">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <label for="csvFile" class="block text-sm font-medium text-gray-700 mb-2">Upload CSV bestand:</label>
+                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="csvFile" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Upload een bestand</span>
+                                    <input id="csvFile" name="csvFile" type="file" accept=".csv" class="sr-only">
+                                </label>
+                                <p class="pl-1">of sleep en zet neer</p>
+                            </div>
+                            <p class="text-xs text-gray-500">CSV tot 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="urenOverzicht" class="mt-8 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Uren Overzicht</h2>
+                        <button id="exportPDF" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Exporteer naar PDF
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table id="urenTabel" class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uren</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pauze 1</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pauze 2</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pauze 3</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Werkelijke Uren</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="urenLijst"></tbody>
+                        </table>
+                    </div>
+                    <div id="totaalUren" class="mt-6 text-lg font-semibold text-gray-800"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const csvFile = document.getElementById('csvFile');
+        const urenLijst = document.getElementById('urenLijst');
+        const totaalUrenElement = document.getElementById('totaalUren');
+        const urenOverzicht = document.getElementById('urenOverzicht');
+        const exportPDFButton = document.getElementById('exportPDF');
+        let totaalUren = 0;
+        let totaalWerkelijkeUren = 0;
+        let urenData = [];
+
+        function berekenWerkelijkeUren(uren) {
+            const pauzes = [
+                { element: document.getElementById('pauze1'), duur: 0 },
+                { element: document.getElementById('pauze2'), duur: 0 },
+                { element: document.getElementById('pauze3'), duur: 0 }
+            ];
+            
+            let werkelijkeUren = uren;
+            let pauzeUren = pauzes.map(pauze => {
+                const [start, eind] = pauze.element.value.split('-');
+                const startTijd = new Date(`1970-01-01T${start}`);
+                const eindTijd = new Date(`1970-01-01T${eind}`);
+                const duur = (eindTijd - startTijd) / 1000 / 60 / 60; // Converteer naar uren
+                
+                if (uren > duur) {
+                    werkelijkeUren -= duur;
+                    return duur.toFixed(2);
+                }
+                return "0.00";
+            });
+            
+            return { werkelijkeUren: Math.max(werkelijkeUren, 0), pauzeUren };
+        }
+
+        function verwerkCSV(results) {
+            urenLijst.innerHTML = '';
+            totaalUren = 0;
+            totaalWerkelijkeUren = 0;
+            urenData = [];
+
+            results.data.slice(1).forEach(row => {
+                if (row.length >= 9) {
+                    const datum = row[2];
+                    const project = row[6];
+                    const uren = parseFloat(row[8]);
+                    const { werkelijkeUren, pauzeUren } = berekenWerkelijkeUren(uren);
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${datum}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${project}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${uren.toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">${pauzeUren[0]}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">${pauzeUren[1]}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">${pauzeUren[2]}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">${werkelijkeUren.toFixed(2)}</td>
+                    `;
+                    urenLijst.appendChild(tr);
+
+                    totaalUren += uren;
+                    totaalWerkelijkeUren += werkelijkeUren;
+
+                    urenData.push([datum, project, uren.toFixed(2), ...pauzeUren, werkelijkeUren.toFixed(2)]);
+                }
+            });
+
+            totaalUrenElement.innerHTML = `
+                <p>Totaal geregistreerde uren: <span class="text-blue-600">${totaalUren.toFixed(2)}</span></p>
+                <p>Totaal werkelijke uren: <span class="text-green-600">${totaalWerkelijkeUren.toFixed(2)}</span></p>
+            `;
+            
+            urenOverzicht.classList.remove('hidden');
+        }
+
+        csvFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            Papa.parse(file, {
+                complete: verwerkCSV
+            });
+        });
+
+        // Voeg event listeners toe aan de pauzetijd-inputs om de berekeningen bij te werken wanneer ze veranderen
+        document.getElementById('pauze1').addEventListener('change', updateCalculations);
+        document.getElementById('pauze2').addEventListener('change', updateCalculations);
+        document.getElementById('pauze3').addEventListener('change', updateCalculations);
+
+        function updateCalculations() {
+            // Trigger een nieuwe berekening door de file change event opnieuw af te vuren als er een bestand is geüpload
+            if (csvFile.files.length > 0) {
+                const file = csvFile.files[0];
+                Papa.parse(file, {
+                    complete: verwerkCSV
+                });
+            }
+        }
+
+        exportPDFButton.addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Voeg werkgever en werknemer gegevens toe
+            doc.setFontSize(18);
+            doc.text("ATB Uren Overzicht", 14, 20);
+
+            doc.setFontSize(12);
+            doc.text("Werkgever:", 14, 30);
+            doc.text(document.getElementById('werkgeverNaam').value, 40, 30);
+            doc.text(document.getElementById('werkgeverAdres').value, 40, 36);
+            doc.text(document.getElementById('werkgeverTelefoon').value, 40, 42);
+            doc.text(document.getElementById('werkgeverEmail').value, 40, 48);
+
+            doc.text("Werknemer:", 14, 58);
+            doc.text(document.getElementById('werknemerNaam').value, 40, 58);
+            doc.text(document.getElementById('werknemerAdres').value, 40, 64);
+            doc.text(document.getElementById('werknemerTelefoon').value, 40, 70);
+            doc.text(document.getElementById('werknemerEmail').value, 40, 76);
+
+            doc.text(`Pauze 1: ${document.getElementById('pauze1').value}`, 14, 86);
+            doc.text(`Pauze 2: ${document.getElementById('pauze2').value}`, 14, 92);
+            doc.text(`Pauze 3: ${document.getElementById('pauze3').value}`, 14, 98);
+
+            doc.autoTable({
+                head: [['Datum', 'Project', 'Uren', 'Pauze 1', 'Pauze 2', 'Pauze 3', 'Werkelijke Uren']],
+                body: urenData,
+                startY: 104
+            });
+
+            const finalY = doc.lastAutoTable.finalY || 104;
+            doc.text(`Totaal geregistreerde uren: ${totaalUren.toFixed(2)}`, 14, finalY + 10);
+            doc.text(`Totaal werkelijke uren: ${totaalWerkelijkeUren.toFixed(2)}`, 14, finalY + 20);
+
+            doc.save("ATB_Uren_Overzicht.pdf");
+        });
+    </script>
+</body>
+</html>
